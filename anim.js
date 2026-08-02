@@ -92,8 +92,8 @@ audio.addEventListener("play", updateLyrics);
 var phrases = [
   "Eres mi lugar favorito",
   "Tu sonrisa es mi debilidad",
-  "Cada día te quiero más",
-  "Eres la mejor parte de mi día",
+  "Cada día te amo más",
+  "Eres mi parte favorita del día",
   "Mi corazón late por ti",
   "Eres perfecta tal y como eres",
   "Contigo todo es mejor",
@@ -102,14 +102,12 @@ var phrases = [
   "Me haces inmensamente feliz",
   "Eres la novia más hermosa",
   "Tu amor es mi refugio",
-  "Pienso en ti cada momento",
   "Eres mi todo",
   "Contigo el tiempo se detiene",
   "Eres mi persona favorita",
   "Tu mirada me enamora",
   "Eres la razón de mi sonrisa",
   "No puedo dejar de mirarte",
-  "Eres mi cielo y mi estrellas",
   "A tu lado nada me falta",
   "Eres la dueña de mi corazón",
   "Haces que todo valga la pena",
@@ -136,23 +134,30 @@ function shufflePhrases() {
 }
 shufflePhrases();
 
-function findFreePosition() {
+function findFreePosition(width, height, containerRect) {
+  var margin = 14;
+  var minX = margin;
+  var maxX = containerRect.width - width - margin;
+  var minY = margin;
+  var maxY = containerRect.height - height - margin;
+  if (maxX < minX || maxY < minY) return null;
+
   // Zona central excluida (donde aparece la letra) — banda horizontal en el centro
-  var centerLeft = 20;
-  var centerRight = 80;
-  var centerTop = 32;
-  var centerBottom = 68;
+  var centerLeft = containerRect.width * 0.2;
+  var centerRight = containerRect.width * 0.8;
+  var centerTop = containerRect.height * 0.32;
+  var centerBottom = containerRect.height * 0.68;
 
   var maxAttempts = 40;
-  var minDist = 22;
+  var minDist = 40;
 
   for (var attempt = 0; attempt < maxAttempts; attempt++) {
-    var x = 4 + Math.random() * 88;
-    var y = 5 + Math.random() * 85;
+    var x = minX + Math.random() * (maxX - minX);
+    var y = minY + Math.random() * (maxY - minY);
 
-    var inCenter =
-      x > centerLeft && x < centerRight && y > centerTop && y < centerBottom;
-    if (inCenter) continue;
+    var overlapCenter =
+      x + width > centerLeft && x < centerRight && y + height > centerTop && y < centerBottom;
+    if (overlapCenter) continue;
 
     var tooClose = false;
     for (var i = 0; i < activePhrases.length; i++) {
@@ -171,19 +176,29 @@ function findFreePosition() {
 function showFloatingPhrase() {
   if (!audio || audio.paused || audio.ended) return;
 
-  var pos = findFreePosition();
-  if (!pos) return;
-
   var phrase = phrases[phraseIndex % phrases.length];
   phraseIndex++;
 
   var el = document.createElement("div");
   el.className = "floating-phrase";
   el.textContent = phrase;
-  el.style.left = pos.x + "%";
-  el.style.top = pos.y + "%";
+  el.style.visibility = "hidden";
+  el.style.left = "0px";
+  el.style.top = "0px";
 
   phrasesContainer.appendChild(el);
+  var rect = el.getBoundingClientRect();
+  var containerRect = phrasesContainer.getBoundingClientRect();
+  var pos = findFreePosition(rect.width, rect.height, containerRect);
+
+  if (!pos) {
+    phrasesContainer.removeChild(el);
+    return;
+  }
+
+  el.style.left = pos.x + "px";
+  el.style.top = pos.y + "px";
+  el.style.visibility = "visible";
 
   var record = { x: pos.x, y: pos.y, el: el };
   activePhrases.push(record);
