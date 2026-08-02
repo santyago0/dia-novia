@@ -4,58 +4,75 @@ var lyrics = document.querySelector("#lyrics");
 
 // Array de objetos que contiene cada línea y su tiempo de aparición en segundos
 var lyricsData = [
-  { text: "At the time", time: 15 },
-  { text: "The whisper of birds", time: 18 },
-  { text: "Lonely before the sun cried", time: 27 },
-  { text: "Fell from the sky", time: 32 },
-  { text: "Like water drops", time: 33 },
-  { text: "Where I'm now? I don't know why", time: 41 },
-  { text: "Nice butterflies in my hands", time: 47 },
-  { text: "Too much light for twilight", time: 54 },
-  { text: "In the mood for the flowers love", time: 59 },
-  { text: "That vision", time: 67 },
-  { text: "Really strong, blew my mind", time: 72 },
-  { text: "Silence Let me see what it was", time: 78 },
-  { text: "I only want to live in clouds", time: 83 },
-  { text: "Where I'm now? I don't know why", time: 91 },
-  { text: "Nice butterflies in my hands", time: 97 },
-  { text: "Too much light for twilight", time: 104 },
-  { text: "In the mood for the flowers love", time: 108 },
-  { text: "At the time", time: 144 },
-  { text: "The whisper of birds", time: 148 },
-  { text: "Lonely before the sun cried", time: 153 },
-  { text: "Fell from the sky", time: 158 },
-  { text: "Like water drops", time: 164 },
-  { text: "Where I'm now? I don't know why", time: 169 },
-  { text: "Nice butterflies in my hands", time: 176 },
-  { text: "Too much light for twilight", time: 183 },
-  { text: "In the mood for the flowers", time: 188 },
-  { text: "Love.", time: 140 },
+  { text: "You know", time: 6 },
+  { text: "I've always been collected, calm and chill", time: 8 },
+  { text: "And you know", time: 13 },
+  { text: "I never look for conflict for the thrill", time: 15 },
+  { text: "But if I'm feeling", time: 18 },
+  { text: "Someone stepping towards you, can't describe", time: 21 },
+  { text: "Just what I'm feeling", time: 24 },
+  { text: "For you, I'd go", time: 28 },
+  { text: "Step to a dude much bigger than me", time: 31 },
+  { text: "For you, I know", time: 34 },
+  { text: "I would get messed up, weigh 153", time: 37 },
+  { text: "For you", time: 40 },
+  { text: "I would get beat to smithereens", time: 43 },
+  { text: "You know", time: 57 },
+  { text: "I'll be in the corner taking notes", time: 59 },
+  { text: "And you know", time: 64 },
+  { text: "I got your six while you're working votes", time: 66 },
+  { text: "But if I'm feeling", time: 69 },
+  { text: "Someone stepping towards you, can't describe", time: 72 },
+  { text: "Just what I'm feeling", time: 75 },
+  { text: "For you, I'd go", time: 79 },
+  { text: "Step to a dude much bigger than me", time: 82 },
+  { text: "For you, I know", time: 85 },
+  { text: "I would get messed up, weigh 153", time: 88 },
+  { text: "For you", time: 91 },
+  { text: "I would get beat to smithereens", time: 93 },
+  { text: "I would get beat to", time: 103 },
+  { text: "You know I had to do one", time: 105 },
+  { text: "You know I had to do one", time: 107 },
+  { text: "You know I had to do one on the record for you", time: 108 },
+  { text: "You know I had to do one on the record for her like this", time: 111 },
+  { text: "You know I had to do one on the record for her like this", time: 115 },
+  { text: "You know I had to do one on the record for her like this", time: 118 },
+  { text: "You know I had to do one on the record for her", time: 121 },
+  { text: "If I'm feeling", time: 124 },
+  { text: "Someone stepping towards you, can't describe", time: 126 },
+  { text: "Just what I'm feeling", time: 129 },
+  { text: "For you, I'd go", time: 133 },
+  { text: "Write a slick song just to show you the world", time: 136 },
+  { text: "For you, I know", time: 139 },
+  { text: "They think it's messed up to sell out for your girl", time: 142 },
+  { text: "For you, I'd go", time: 145 },
+  { text: "Step to a dude much bigger than me", time: 148 },
+  { text: "For you, I know", time: 152 },
+  { text: "I would get messed up, weigh 153", time: 155 },
+  { text: "For you", time: 158 },
+  { text: "I would get beat to smithereens", time: 160 },
 ];
 
 // Animar las letras
 function updateLyrics() {
-  var time = Math.floor(audio.currentTime);
-  var currentLine = lyricsData.find(
-    (line) => time >= line.time && time < line.time + 6
-  );
+  if (!audio || !lyrics) return;
 
-  if (currentLine) {
-    // Calcula la opacidad basada en el tiempo en la línea actual
-    var fadeInDuration = 0.1; // Duración del efecto de aparición en segundos
-    var opacity = Math.min(1, (time - currentLine.time) / fadeInDuration);
+  var time = audio.currentTime;
+  var currentLine = [...lyricsData].reverse().find((line) => time >= line.time);
+  var nextLine = lyricsData.find((line) => line.time > time);
 
-    // Aplica el efecto de aparición
-    lyrics.style.opacity = opacity;
+  if (currentLine && (!nextLine || time < nextLine.time)) {
     lyrics.innerHTML = currentLine.text;
+    lyrics.style.opacity = 1;
   } else {
-    // Restablece la opacidad y el contenido si no hay una línea actual
     lyrics.style.opacity = 0;
     lyrics.innerHTML = "";
   }
 }
 
-setInterval(updateLyrics, 1000);
+audio.addEventListener("timeupdate", updateLyrics);
+audio.addEventListener("loadedmetadata", updateLyrics);
+audio.addEventListener("play", updateLyrics);
 
 //funcion titulo
 // Función para ocultar el título después de 216 segundos
