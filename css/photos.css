@@ -18,12 +18,18 @@
   --shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
 }
 
+/* Prevent horizontal scrolling and remove default page margins */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 /* Header */
