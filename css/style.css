@@ -36,6 +36,31 @@ body{
     background-color: rgb(50, 194, 194);
 }
 
+/* Botón Continuar - mismo estilo que los botones de flower.html y photos.html */
+.continue-btn {
+    display: inline-block;
+    padding: 16px 48px;
+    font-family: 'Poppins', cursive;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, #ff6b9d, #c4407a);
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 20px rgba(196, 64, 122, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.continue-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(196, 64, 122, 0.6);
+}
+.continue-btn:active {
+    transform: translateY(0);
+}
+
 .greetings{
     font-size: 7rem;
     font-weight: 900;
@@ -68,6 +93,15 @@ body{
 .greetings > span:nth-child(6){
     animation-delay: 1s;
 }
+.greetings > span:nth-child(7){
+    animation-delay: 1.2s;
+}
+.greetings > span:nth-child(8){
+    animation-delay: 1.4s;
+}
+.greetings > span:nth-child(9){
+    animation-delay: 1.6s;
+}
 
 .description{
     font-size: 1.5rem;
@@ -77,7 +111,7 @@ body{
 .button a{
     text-decoration: none;
     font-size: 1rem;
-    color: #111;
+    color: #fff;
 }
 
 @media screen and (max-width:574px){
@@ -91,7 +125,8 @@ body{
         font-size: 2rem;
     }
     
-    .button a{
+    .continue-btn{
         font-size: 1rem;
+        padding: 14px 36px;
     }
 }

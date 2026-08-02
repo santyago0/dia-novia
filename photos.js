@@ -3,6 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const downloadZone = document.getElementById("downloadZone");
   const downloadBtn = document.getElementById("downloadBtn");
 
+  // Small random rotation for scrapbook feel, applied after entrance animation
+  cards.forEach((card) => {
+    const baseRot = parseFloat(card.dataset.rot || "0");
+    card.style.setProperty("--rest-rot", `${baseRot}deg`);
+  });
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -12,10 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
     },
-    { threshold: 0.2 }
+    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
   );
 
-  cards.forEach((card) => observer.observe(card));
+  cards.forEach((card, i) => {
+    // Stagger via transition-delay so each card animates one at a time
+    card.style.transitionDelay = `${(i % 3) * 0.12}s`;
+    observer.observe(card);
+  });
 
   // Classify images by orientation (landscape / portrait) so CSS can adapt
   const imgs = document.querySelectorAll('.photo-card img');
@@ -38,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
       classifyImage(img);
     } else {
       img.addEventListener('load', () => classifyImage(img));
-      // fallback for cached images
       setTimeout(() => { if (img.naturalWidth) classifyImage(img); }, 300);
     }
   });
@@ -70,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
     } finally {
       downloadBtn.disabled = false;
-      downloadBtn.textContent = 'Descargar collage "Feliz Día de la Novia"';
+      downloadBtn.textContent = 'Sorpresita 🎁';
     }
   });
 });

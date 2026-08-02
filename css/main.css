@@ -195,44 +195,45 @@ body {
 }
 .flower--4 {
   left: 50%;
-  transform: rotate(10deg) translateX(-22vmin);
+  transform: rotate(10deg) translate(-18vmin, 8vmin) scale(0.85);
   -webkit-animation: moving-flower-1 4s linear infinite;
   animation: moving-flower-1 4s linear infinite;
 }
 .flower--4 .flower__line {
-  height: 65vmin;
+  height: 55vmin;
   -webkit-animation-delay: 0.4s;
   animation-delay: 0.4s;
 }
 .flower--5 {
   left: 50%;
-  transform: rotate(25deg) translateX(20vmin);
+  transform: rotate(25deg) translate(16vmin, 5vmin) scale(0.8);
   -webkit-animation: moving-flower-2 4s linear infinite;
   animation: moving-flower-2 4s linear infinite;
 }
 .flower--5 .flower__line {
-  height: 58vmin;
+  height: 50vmin;
   -webkit-animation-delay: 0.7s;
   animation-delay: 0.7s;
 }
 .flower--6 {
   left: 50%;
-  transform: rotate(-20deg) translateX(-12vmin);
+  transform: rotate(-20deg) translate(-8vmin, -6vmin) scale(0.75);
   -webkit-animation: moving-flower-3 4s linear infinite;
   animation: moving-flower-3 4s linear infinite;
 }
 .flower--6 .flower__line {
+  height: 48vmin;
   -webkit-animation-delay: 1s;
   animation-delay: 1s;
 }
 .flower--7 {
   left: 50%;
-  transform: rotate(15deg) translateX(14vmin);
+  transform: rotate(15deg) translate(10vmin, -10vmin) scale(0.7);
   -webkit-animation: moving-flower-1 4s linear infinite;
   animation: moving-flower-1 4s linear infinite;
 }
 .flower--7 .flower__line {
-  height: 62vmin;
+  height: 45vmin;
   -webkit-animation-delay: 0.5s;
   animation-delay: 0.5s;
 }
