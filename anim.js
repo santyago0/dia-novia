@@ -124,6 +124,7 @@ var phrases = [
 
 var phrasesContainer = document.getElementById("floatingPhrases");
 var phraseIndex = 0;
+var activePhrases = [];
 
 function shufflePhrases() {
   for (var i = phrases.length - 1; i > 0; i--) {
@@ -135,8 +136,43 @@ function shufflePhrases() {
 }
 shufflePhrases();
 
+function findFreePosition() {
+  // Zona central excluida (donde aparece la letra) — banda horizontal en el centro
+  var centerLeft = 20;
+  var centerRight = 80;
+  var centerTop = 32;
+  var centerBottom = 68;
+
+  var maxAttempts = 40;
+  var minDist = 22;
+
+  for (var attempt = 0; attempt < maxAttempts; attempt++) {
+    var x = 4 + Math.random() * 88;
+    var y = 5 + Math.random() * 85;
+
+    var inCenter =
+      x > centerLeft && x < centerRight && y > centerTop && y < centerBottom;
+    if (inCenter) continue;
+
+    var tooClose = false;
+    for (var i = 0; i < activePhrases.length; i++) {
+      var dx = x - activePhrases[i].x;
+      var dy = y - activePhrases[i].y;
+      if (Math.sqrt(dx * dx + dy * dy) < minDist) {
+        tooClose = true;
+        break;
+      }
+    }
+    if (!tooClose) return { x: x, y: y };
+  }
+  return null;
+}
+
 function showFloatingPhrase() {
   if (!audio || audio.paused || audio.ended) return;
+
+  var pos = findFreePosition();
+  if (!pos) return;
 
   var phrase = phrases[phraseIndex % phrases.length];
   phraseIndex++;
@@ -144,16 +180,18 @@ function showFloatingPhrase() {
   var el = document.createElement("div");
   el.className = "floating-phrase";
   el.textContent = phrase;
-
-  var x = 8 + Math.random() * 78;
-  var y = 12 + Math.random() * 68;
-  el.style.left = x + "%";
-  el.style.top = y + "%";
+  el.style.left = pos.x + "%";
+  el.style.top = pos.y + "%";
 
   phrasesContainer.appendChild(el);
 
+  var record = { x: pos.x, y: pos.y, el: el };
+  activePhrases.push(record);
+
   setTimeout(function () {
     if (el.parentNode) el.parentNode.removeChild(el);
+    var idx = activePhrases.indexOf(record);
+    if (idx !== -1) activePhrases.splice(idx, 1);
   }, 6000);
 }
 
